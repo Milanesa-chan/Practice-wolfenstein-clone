@@ -57,20 +57,42 @@ public class Motor implements KeyListener {
         if(tIzq) angJugador-=VEL_ROTACION;
         if(tDer) angJugador+=VEL_ROTACION;
         if(tW){
-            xJugador -= Math.cos(angJugador)*VEL_MOVIMIENTO;
-            yJugador -= Math.sin(angJugador)*VEL_MOVIMIENTO;
+            //xJugador -= Math.cos(angJugador)*VEL_MOVIMIENTO;
+            moverJugX(-Math.cos(angJugador)*VEL_MOVIMIENTO);
+            //yJugador -= Math.sin(angJugador)*VEL_MOVIMIENTO;
+            moverJugY(-Math.sin(angJugador)*VEL_MOVIMIENTO);
         }
         if(tS){
-            xJugador += Math.cos(angJugador)*VEL_MOVIMIENTO;
-            yJugador += Math.sin(angJugador)*VEL_MOVIMIENTO;
+            //xJugador += Math.cos(angJugador)*VEL_MOVIMIENTO;
+            moverJugX(Math.cos(angJugador)*VEL_MOVIMIENTO);
+            //yJugador += Math.sin(angJugador)*VEL_MOVIMIENTO;
+            moverJugY(Math.sin(angJugador)*VEL_MOVIMIENTO);
         }
         if(tA){
-            xJugador -= Math.sin(angJugador)*VEL_MOVIMIENTO;
-            yJugador += Math.cos(angJugador)*VEL_MOVIMIENTO;
+            //xJugador -= Math.sin(angJugador)*VEL_MOVIMIENTO;
+            moverJugX(-Math.sin(angJugador)*VEL_MOVIMIENTO);
+            //yJugador += Math.cos(angJugador)*VEL_MOVIMIENTO;
+            moverJugY(Math.cos(angJugador)*VEL_MOVIMIENTO);
         }
         if(tD){
-            xJugador += Math.sin(angJugador)*VEL_MOVIMIENTO;
-            yJugador -= Math.cos(angJugador)*VEL_MOVIMIENTO;
+            //xJugador += Math.sin(angJugador)*VEL_MOVIMIENTO;
+            moverJugX(Math.sin(angJugador)*VEL_MOVIMIENTO);
+            //yJugador -= Math.cos(angJugador)*VEL_MOVIMIENTO;
+            moverJugY(-Math.cos(angJugador)*VEL_MOVIMIENTO);
+        }
+    }
+
+    private void moverJugX(double cantidad){
+        double xJugNuevo = xJugador + cantidad;
+        if(matMapa[(int) yJugador][(int) xJugNuevo] == 0 || matMapa[(int) yJugador][(int) xJugador] != 0){
+            xJugador = xJugNuevo;
+        }
+    }
+
+    private void moverJugY(double cantidad){
+        double yJugNuevo = yJugador + cantidad;
+        if(matMapa[(int) yJugNuevo][(int) xJugador] == 0 || matMapa[(int) yJugador][(int) xJugador] != 0){
+            yJugador = yJugNuevo;
         }
     }
 

@@ -8,9 +8,11 @@ public class Graficos extends JPanel {
     private final double PASO_RAYO = 0.002;
     private final double FOV_VERTICAL = 100, FOV_HORIZONTAL = 100, MAX_PASOS = 10000;
 
-    private final int altoMinimapa = 200, anchoMinimapa = 200, xMinimapa = 20, yMinimapa = 340;
+    private int tamMinimapa = 256, xMinimapa = 20, yMinimapa = 0;
+
     public Graficos(int cantCols){
         super();
+
         columnas = new double[cantCols];
         fpsCounter = new FPSCounter();
         iniciarThread();
@@ -44,6 +46,8 @@ public class Graficos extends JPanel {
     }
 
     private void pintarMinimapa(Graphics g){
+        yMinimapa = this.getHeight() - tamMinimapa - offsetVentana;
+
         Motor mot = Motor.getInstance();
         double angJug = mot.getAngJugador();
         double xJug = mot.getxJugador();
@@ -51,9 +55,9 @@ public class Graficos extends JPanel {
         int[][] matMapa = mot.getMatMapa();
 
         g.setColor(Color.BLUE);
-        g.fillRect(xMinimapa-10, yMinimapa-10, anchoMinimapa+20, altoMinimapa+20);
-        int anchoCuad = anchoMinimapa/matMapa[0].length;
-        int altoCuad = altoMinimapa/matMapa.length;
+        g.fillRect(xMinimapa-10, yMinimapa-10, tamMinimapa+20, tamMinimapa+20);
+        int anchoCuad = tamMinimapa/matMapa[0].length;
+        int altoCuad = tamMinimapa/matMapa.length;
         for(int i=0; i<matMapa.length; i++){
             for(int j=0; j<matMapa[0].length; j++){
                 if(matMapa[i][j]==0) g.setColor(Color.BLACK);
@@ -65,12 +69,12 @@ public class Graficos extends JPanel {
         g.setColor(Color.WHITE);
         int anchoMapa = matMapa[0].length;
         int altoMapa = matMapa.length;
-        g.fillOval((int) ((xMinimapa+(xJug/anchoMapa)*anchoMinimapa)) - 3, (int) ((yMinimapa+(yJug/altoMapa)*altoMinimapa)) - 3, 6, 6);
+        g.fillOval((int) ((xMinimapa+(xJug/anchoMapa)*tamMinimapa)) - 3, (int) ((yMinimapa+(yJug/altoMapa)*tamMinimapa)) - 3, 6, 6);
 
-        int xJugMinimapa = (int) (xMinimapa+(xJug/anchoMapa)*anchoMinimapa);
-        int yJugMinimapa = (int) (yMinimapa+(yJug/altoMapa)*altoMinimapa);
+        int xJugMinimapa = (int) (xMinimapa+(xJug/anchoMapa)*tamMinimapa);
+        int yJugMinimapa = (int) (yMinimapa+(yJug/altoMapa)*tamMinimapa);
         double largoLinea = 0.3;
-        g.drawLine(xJugMinimapa, yJugMinimapa, (int)(xJugMinimapa+(largoLinea*Math.sin(-angJug-Math.toRadians(90))*anchoMinimapa)), (int)(yJugMinimapa+(largoLinea*Math.cos(-angJug-Math.toRadians(90))*altoMinimapa)));
+        g.drawLine(xJugMinimapa, yJugMinimapa, (int)(xJugMinimapa+(largoLinea*Math.sin(-angJug-Math.toRadians(90))*tamMinimapa)), (int)(yJugMinimapa+(largoLinea*Math.cos(-angJug-Math.toRadians(90))*tamMinimapa)));
     }
 
     private void pintarColumnas(Graphics g){
