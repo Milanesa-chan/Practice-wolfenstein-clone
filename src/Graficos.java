@@ -6,7 +6,7 @@ public class Graficos extends JPanel {
     private double[] columnas;
     private final int offsetVentana = 20;
     private final double PASO_RAYO = 0.002;
-    private final double FOV_VERTICAL = 100, FOV_HORIZONTAL = 100, MAX_PASOS = 10000;
+    private final double FOV_VERTICAL = 150, FOV_HORIZONTAL = 100, MAX_PASOS = 10000;
 
     private int tamMinimapa = 256, xMinimapa = 20, yMinimapa = 0;
 
