@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Graficos extends JPanel {
     private FPSCounter fpsCounter;
@@ -34,6 +35,7 @@ public class Graficos extends JPanel {
 
         pintarFondo(g);
         pintarColumnas(g);
+        pintarJugadores(g);
         pintarMinimapa(g);
         pintarFPS(g);
         fpsCounter.framesHastaAhora++;
@@ -135,5 +137,66 @@ public class Graficos extends JPanel {
         }
         g.setColor(new Color(0xb5b2a8));
         g.fillRect(0, this.getHeight()/2-offsetVentana, this.getWidth(), this.getHeight()/2+offsetVentana);
+    }
+
+    private void pintarJugadores(Graphics g){
+        ArrayList<Jugador> listaJug = Motor.getInstance().getListaJugadores();
+        g.setColor(Color.GREEN);
+        for(Jugador j : listaJug){
+            pintarJugador(j, g);
+        }
+    }
+
+    private void pintarJugador(Jugador jug, Graphics g){
+        Motor mot = Motor.getInstance();
+        double xJug = mot.getxJugador();
+        double yJug = mot.getyJugador();
+        double angJug = mot.getAngJugador();
+
+        if(esJugadorVisible(xJug, yJug, angJug, jug)){
+            double xOtro = jug.getPosX();
+            double yOtro = jug.getPosY();
+            double angJugReal = -angJug-Math.toRadians(180);
+            double angJugNormalizado = normalizarAngulo(angJugReal);
+            double distX = xOtro - xJug;
+            double distY = yJug - yOtro;
+            double angAOtro = normalizarAngulo(Math.atan(distY/distX));
+            if(distX<0) angAOtro = normalizarAngulo(angAOtro-Math.toRadians(180));
+            double angMin = angJugNormalizado - Math.toRadians(FOV_HORIZONTAL)/2;
+            double angMax = angJugNormalizado + Math.toRadians(FOV_HORIZONTAL)/2;
+            double distJug = Math.sqrt(Math.pow(distX, 2)+Math.pow(distY, 2));
+
+            double anchoJug = 0.3;
+            int altoJug = (int) (this.getHeight()*(1/(3*distJug)));
+
+            double porcionHorizontal = Math.abs(angMax - angAOtro) / Math.toRadians(FOV_HORIZONTAL);
+            int xJugPantalla = (int)(this.getWidth()*porcionHorizontal);
+            int yJugPantalla = (int) ((this.getHeight()/2)-(altoJug/2));
+
+            g.fillOval(xJugPantalla, yJugPantalla, (int) (anchoJug*altoJug), altoJug);
+        }
+    }
+
+    private boolean esJugadorVisible(double xJug, double yJug, double angJug, Jugador otro){
+        double xOtro = otro.getPosX();
+        double yOtro = otro.getPosY();
+        double angJugReal = -angJug-Math.toRadians(180);
+        double angJugNormalizado = normalizarAngulo(angJugReal);
+        double distX = xOtro - xJug;
+        double distY = yJug - yOtro;
+        double angAOtro = normalizarAngulo(Math.atan(distY/distX));
+        if(distX<0) angAOtro = normalizarAngulo(angAOtro-Math.toRadians(180));
+        double angMin = angJugNormalizado - Math.toRadians(FOV_HORIZONTAL)/2;
+        double angMax = angJugNormalizado + Math.toRadians(FOV_HORIZONTAL)/2;
+        return angAOtro>angMin && angAOtro<angMax;
+    }
+
+    private double normalizarAngulo(double angulo){
+        double normalizado = angulo;
+        while(normalizado >= 2*Math.PI)
+            normalizado -= 2*Math.PI;
+        while(normalizado < 0)
+            normalizado += 2*Math.PI;
+        return normalizado;
     }
 }

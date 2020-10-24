@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Motor implements KeyListener {
     private static Motor instance;
@@ -14,6 +15,7 @@ public class Motor implements KeyListener {
 
     private double xJugador = 2, yJugador = 2;
     private double angJugador = 0;
+    private ArrayList<Jugador> listaJugadores;
 
     private boolean tW, tA, tS, tD, tIzq, tDer;
 
@@ -28,6 +30,7 @@ public class Motor implements KeyListener {
     }
 
     private Motor(){
+        listaJugadores = new ArrayList<>();
         matMapa = new MatMapaLoader(NOMBRE_IMG_MAPA).getMatMapa();
         JFrame ventana = new JFrame("A");
         ventana.setSize(800, 600);
@@ -38,6 +41,12 @@ public class Motor implements KeyListener {
         ventana.add(instGraficos);
         ventana.addKeyListener(this);
         iniciarThreadAct();
+
+
+
+
+
+        listaJugadores.add(new Jugador(2.5, 2.5, "Test"));
     }
 
     private void iniciarThreadAct(){
@@ -164,5 +173,9 @@ public class Motor implements KeyListener {
                 tDer=false;
                 break;
         }
+    }
+
+    public ArrayList<Jugador> getListaJugadores() {
+        return listaJugadores;
     }
 }
