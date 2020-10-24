@@ -8,14 +8,9 @@ public class Motor implements KeyListener {
     private Graficos instGraficos;
     private final int cantCols = 98;
     private final double VEL_ROTACION = 0.02, VEL_MOVIMIENTO = 0.02;
+    private final String NOMBRE_IMG_MAPA = "mapa.png";
 
-    private int[][] matMapa = {
-            {1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 1, 0, 0, 0, 1},
-            {1, 0, 0, 0, 1, 0, 1},
-            {1, 0, 0, 0, 1, 0, 1},
-            {1, 0, 0, 0, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1}};
+    private int[][] matMapa;
 
     private double xJugador = 2, yJugador = 2;
     private double angJugador = 0;
@@ -33,6 +28,7 @@ public class Motor implements KeyListener {
     }
 
     private Motor(){
+        matMapa = new MatMapaLoader(NOMBRE_IMG_MAPA).getMatMapa();
         JFrame ventana = new JFrame("A");
         ventana.setSize(800, 600);
         ventana.setLocationRelativeTo(null);
