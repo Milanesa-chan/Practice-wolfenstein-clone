@@ -3,14 +3,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class MatMapaLoader {
-    private String nombreMapa;
     private BufferedImage imagenMapa;
+    private int[] arrayMapa;
 
-    public MatMapaLoader(String nombreMapa) {
-        this.nombreMapa = nombreMapa;
-    }
-
-    public int[][] getMatMapa(){
+    public int[][] getMatMapa(String nombreMapa){
         try {
             if(this.getClass().getClassLoader().getResource(nombreMapa)==null) throw new IOException();
             imagenMapa = ImageIO.read(this.getClass().getClassLoader().getResource(nombreMapa));
@@ -37,5 +33,17 @@ public class MatMapaLoader {
             System.err.println("No se encontro la imagen-mapa: '"+nombreMapa+"'");
             return new int[][]{{1}};
         }
+    }
+
+    public int[][] getMatMapa(int[] mapaArray){
+        int filas = mapaArray[0];
+        int cols = mapaArray[1];
+        int[][] mapa = new int[mapaArray[0]][mapaArray[1]];
+        for(int i=0; i<cols; i++){
+            for(int j=0; j<filas; j++){
+                mapa[j][i] = mapaArray[2+j*cols+i];
+            }
+        }
+        return mapa;
     }
 }
